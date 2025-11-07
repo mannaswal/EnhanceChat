@@ -9,6 +9,7 @@ let originalFaviconUrl = null;
 let hasStreamedBefore = false;
 let soundPlayedForCompletion = false;
 let currentVolume = 5; // Default volume (5/10 = 50%, will be loaded from storage)
+let notificationsEnabled = true; // Default enabled, will be loaded from storage
 
 function startMonitoring() {
 	// Delay to avoid false positives on page load
@@ -110,8 +111,8 @@ function updateStreamingState(streaming) {
 	}
 
 	if (!streaming && wasStreaming) {
-		// Only send notification if tab is hidden and we haven't played sound yet
-		if (document.hidden && !soundPlayedForCompletion) {
+		// Only send notification if tab is hidden, notifications are enabled, and we haven't played sound yet
+		if (document.hidden && notificationsEnabled && !soundPlayedForCompletion) {
 			soundPlayedForCompletion = true;
 			chrome.runtime.sendMessage({ type: 'streaming-complete' }, (response) => {
 				if (chrome.runtime.lastError) {
@@ -134,10 +135,13 @@ function init() {
 	if (!originalFaviconUrl) {
 		getCurrentFavicon();
 	}
-	// Load volume from storage
-	chrome.storage.local.get(['volume'], (result) => {
+	// Load volume and enabled state from storage
+	chrome.storage.local.get(['volume', 'enabled'], (result) => {
 		if (result.volume !== undefined) {
 			currentVolume = result.volume;
+		}
+		if (result.enabled !== undefined) {
+			notificationsEnabled = result.enabled;
 		}
 	});
 	startMonitoring();
@@ -170,10 +174,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		sendResponse({ success: true });
 		return true;
 	}
+	if (message.type === 'set-enabled') {
+		notificationsEnabled = message.enabled;
+		sendResponse({ success: true });
+		return true;
+	}
 	return false;
 });
 
 function playNotificationSoundInPage() {
+	// Don't play sound if notifications are disabled
+	if (!notificationsEnabled) {
+		return;
+	}
+
 	// Convert volume from 0-10 scale to 0-1 scale for audio.volume
 	const normalizedVolume = currentVolume / 10;
 

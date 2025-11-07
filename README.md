@@ -5,37 +5,38 @@ A Chrome browser extension that enhances T3 Chat with audio notifications and dy
 ## Features
 
 - 🎵 **Audio Notifications**: Plays a chime sound when streaming completes
+- 🎚️ **Volume Control**: Adjustable notification volume (0-10) with persistent settings
+- 🔛 **Enable/Disable Toggle**: Quickly turn the extension on or off
 - 🟡 **Favicon Indicators**:
   - Yellow dot appears when streaming is active
   - Green dot appears when streaming completes
   - Automatically restores original favicon after 3 seconds
+- 🖥️ **Terminal-Themed Popup**: Clean, minimal interface
 
 ## Installation
 
-1. **Generate Extension Icons** (if not already created):
+1. **Build the Popup** (Required before loading extension):
 
-   - **Note**: These are for the extension's own icons (shown in Chrome's extension menu), NOT for the favicon overlay feature
-   - The favicon overlay feature automatically uses T3 Chat's existing favicon and overlays dots on it - no manual download needed!
-   - Open `assets/icons/generate-icons.html` in your browser
-   - Click the buttons to generate and download icon files (16x16, 48x48, 128x128)
-   - Save them in the `assets/icons/` directory
-
-2. **Add Notification Sound**:
-
-   - Add a `notification.mp3` or `notification.wav` file to the `assets/` directory
-   - See `assets/README.md` for more information
-
-3. **Build the Popup** (Required before loading extension):
    - Navigate to the `popup` directory: `cd popup`
-   - Install dependencies (if not already done): `pnpm install`
+   - Install dependencies: `pnpm install`
    - Build the popup: `pnpm build`
    - This will create the built files in `dist/popup/`
 
-4. **Load Extension in Chrome**:
+2. **Load Extension in Chrome**:
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable "Developer mode" (toggle in top right)
    - Click "Load unpacked"
    - Select this `EnhanceChat` directory
+
+## Popup Interface
+
+The extension popup features a clean, terminal-themed interface with:
+
+- **Volume Slider**: Control notification volume from 0 to 10 (default: 5)
+- **Enable/Disable Switch**: Toggle the extension on or off
+- **Settings Persistence**: All settings are automatically saved and persist across sessions
+
+Settings are stored using Chrome's `storage.local` API and sync across all tabs.
 
 ## How It Works
 
@@ -64,6 +65,7 @@ The extension uses two methods to detect streaming status:
 
 - Plays when streaming transitions from active to complete
 - Uses the notification sound file from the `assets/` directory
+- Volume controlled via popup slider (0-10)
 - Fallback support for both MP3 and WAV formats
 
 ## File Structure
@@ -74,7 +76,12 @@ EnhanceChat/
 ├── background.js          # Service worker for notifications
 ├── content.js             # Content script for monitoring and favicon updates
 ├── popup/                 # Vite React app for the extension popup
-│   ├── src/              # React source files
+│   ├── src/
+│   │   ├── App.tsx       # Main popup component
+│   │   ├── components/
+│   │   │   ├── DebugPanel.tsx  # Debug tools (for development)
+│   │   │   └── ui/       # shadcn/ui components
+│   │   └── index.css     # Terminal-themed styles
 │   ├── dist/             # Built popup files (generated after build)
 │   └── package.json      # Popup dependencies
 ├── dist/popup/           # Built popup output (created after build)
@@ -97,6 +104,10 @@ EnhanceChat/
 
 Replace `assets/notification.mp3` with your preferred sound file. Supported formats: MP3, WAV.
 
+### Adjusting Volume
+
+Use the volume slider in the popup (0-10). Settings are automatically saved.
+
 ### Adjusting Favicon Dot Colors
 
 Edit the color values in `content.js`:
@@ -113,6 +124,14 @@ const sendButton = document.querySelector('button[type="submit"], ...');
 const stopButton = document.querySelector('button[aria-label*="stop" i], ...');
 ```
 
+### Customizing Popup Theme
+
+The popup uses a terminal-themed dark mode. To customize:
+
+- Edit `popup/src/index.css` to modify colors and styling
+- Colors use OKLCH color space for better consistency
+- Theme variables are defined in the `:root` selector
+
 ## Browser Support
 
 Currently supports Chrome/Chromium (Manifest V3). Firefox support can be added later with a Manifest V2 version.
@@ -120,8 +139,10 @@ Currently supports Chrome/Chromium (Manifest V3). Firefox support can be added l
 ## Troubleshooting
 
 - **No notification sound**: Ensure `assets/notification.mp3` or `assets/notification.wav` exists
+- **Volume not working**: Check that the volume slider is set above 0 in the popup
 - **Favicon not updating**: Check browser console for CORS errors (may need to adjust favicon loading)
 - **Not detecting streaming**: Inspect T3 Chat's DOM and update button selectors in `content.js`
+- **Popup not showing**: Make sure you've built the popup (`cd popup && pnpm build`)
 
 ## Development
 
@@ -153,9 +174,28 @@ pnpm dlx shadcn@latest add [component-name]
 ```
 
 For example:
+
 ```bash
 pnpm dlx shadcn@latest add dialog
 ```
+
+### Debug Panel
+
+A debug panel component is available at `popup/src/components/DebugPanel.tsx` for testing and development. It includes:
+
+- Sound testing
+- Favicon state manipulation
+- Extension status checking
+
+To use it, import and render `<DebugPanel />` in your component.
+
+### Tech Stack
+
+- **Vite**: Build tool and dev server
+- **React 19**: UI framework
+- **TypeScript**: Type safety
+- **Tailwind CSS v4**: Utility-first CSS with OKLCH colors
+- **shadcn/ui**: Accessible component library
 
 ### Future Enhancements
 
@@ -163,6 +203,7 @@ pnpm dlx shadcn@latest add dialog
 - User preferences/options page
 - Firefox support
 - More robust streaming detection
+- Custom notification sound selection
 
 ## License
 

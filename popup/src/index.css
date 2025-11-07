@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,17 +13,23 @@
 	--popover: oklch(1 0 0); /* Slightly lighter black */
 	--popover-foreground: oklch(0.145 0 0); /* White */
 	--primary: oklch(0.205 0 0); /* Primary is bright white */
-	--primary-foreground: oklch(0.985 0 0); /* Deep black for contrast on primary (rarely used in dark mode, but kept consistent)*/
+	--primary-foreground: oklch(
+		0.985 0 0
+	); /* Deep black for contrast on primary (rarely used in dark mode, but kept consistent)*/
 	--secondary: oklch(0.97 0 0); /* Neutral dark as secondary */
 	--secondary-foreground: oklch(0.205 0 0); /* Very light for readability */
 	--muted: oklch(0.97 0 0); /* Slightly lighter muted element */
 	--muted-foreground: oklch(0.556 0 0); /* Muted foreground, medium gray */
 	--accent: oklch(0.97 0 0); /* Accent, a bit lighter gray */
 	--accent-foreground: oklch(0.205 0 0); /* Nearly white accent text */
-	--destructive: oklch(0.577 0.245 27.325); /* Bright red for errors, looks good on dark */
+	--destructive: oklch(
+		0.577 0.245 27.325
+	); /* Bright red for errors, looks good on dark */
 	--destructive-foreground: 0 0% 98%; /* White on destructive backgrounds */
 	--border: oklch(0.922 0 0); /* Dark border, but lighter than background */
-	--input: oklch(0.922 0 0); /* Input backgrounds a bit lighter for visibility */
+	--input: oklch(
+		0.922 0 0
+	); /* Input backgrounds a bit lighter for visibility */
 	--ring: oklch(0.708 0 0); /* White ring for focus (good pop on dark) */
 	--radius: 0.625rem;
 	--chart-1: oklch(0.646 0.222 41.116);
@@ -44,7 +50,7 @@
 body {
 	background-color: hsl(var(--background));
 	color: hsl(var(--foreground));
-	font-family: 'Geist Mono', 'Courier New', monospace;
+	font-family: 'JetBrains Mono', 'Geist Mono', 'Courier New', monospace;
 }
 
 @theme inline {
@@ -120,10 +126,17 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
+}
+
+.jetbrains-mono {
+	font-family: 'JetBrains Mono', monospace;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
 }
