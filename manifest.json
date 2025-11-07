@@ -1,0 +1,48 @@
+{
+	"manifest_version": 3,
+	"name": "T3 Chat Enhancer",
+	"version": "1.0.0",
+	"description": "Adds audio notifications and dynamic favicon indicators to T3 Chat when streaming completes",
+	"permissions": ["activeTab", "scripting", "tabs", "storage"],
+	"host_permissions": [
+		"https://t3chat.com/*",
+		"https://*.t3chat.com/*",
+		"https://t3.chat/*",
+		"https://*.t3.chat/*"
+	],
+	"action": {
+		"default_popup": "dist/popup/index.html",
+		"default_title": "T3 Chat Enhancer"
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://t3chat.com/*",
+				"https://*.t3chat.com/*",
+				"https://t3.chat/*",
+				"https://*.t3.chat/*"
+			],
+			"js": ["content.js"],
+			"run_at": "document_idle"
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["assets/notification.mp3", "assets/notification.wav"],
+			"matches": [
+				"https://t3chat.com/*",
+				"https://*.t3chat.com/*",
+				"https://t3.chat/*",
+				"https://*.t3.chat/*"
+			]
+		}
+	],
+	"icons": {
+		"16": "assets/icons/icon16.png",
+		"48": "assets/icons/icon48.png",
+		"128": "assets/icons/icon128.png"
+	}
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>T3 Chat Enhancer - Debug</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+      }
+
+      h2 {
+        margin: 0 0 12px 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .section {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .section:last-child {
+        border-bottom: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 8px 12px;
+        margin: 4px 0;
+        background: #4A90E2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: #357ABD;
+      }
+
+      button:active {
+        background: #2A5F8F;
+      }
+
+      button.test {
+        background: #FFC107;
+      }
+
+      button.test:hover {
+        background: #FFB300;
+      }
+
+      .status {
+        padding: 8px;
+        background: #f5f5f5;
+        border-radius: 4px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .radio-group label {
+        flex: 1;
+        padding: 8px;
+        background: #f5f5f5;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .radio-group input[type="radio"] {
+        display: none;
+      }
+
+      .radio-group input[type="radio"]:checked+span {
+        background: #4A90E2;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>🔧 T3 Chat Enhancer</h2>
+
+    <div class="section">
+      <h3>Notification Sound</h3>
+      <button id="testSound" class="test">🔊 Test Notification Sound</button>
+      <div id="soundStatus" class="status"></div>
+    </div>
+
+    <div class="section">
+      <h3>Favicon State</h3>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="faviconState" value="idle" checked>
+          <span>Idle</span>
+        </label>
+        <label>
+          <input type="radio" name="faviconState" value="streaming">
+          <span>Streaming</span>
+        </label>
+        <label>
+          <input type="radio" name="faviconState" value="done">
+          <span>Done</span>
+        </label>
+      </div>
+      <button id="applyFavicon">Apply Favicon State</button>
+      <div id="faviconStatus" class="status"></div>
+    </div>
+
+    <div class="section">
+      <h3>Debug Info</h3>
+      <button id="checkPage">Check if Extension is Active</button>
+      <div id="debugStatus" class="status"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+
+</html>

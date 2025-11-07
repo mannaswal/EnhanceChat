@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>Extension Icon Generator</h1>
+    <p>Open this file in a browser and click the buttons to generate icons.</p>
+    <div>
+        <button onclick="generateIcon(16)">Generate 16x16</button>
+        <button onclick="generateIcon(48)">Generate 48x48</button>
+        <button onclick="generateIcon(128)">Generate 128x128</button>
+    </div>
+    <canvas id="canvas" style="border: 1px solid #ccc; margin-top: 20px;"></canvas>
+    
+    <script>
+        function generateIcon(size) {
+            const canvas = document.getElementById('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#4A90E2';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Chat bubble (white circle)
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size * 0.35, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Notification dot (yellow)
+            ctx.fillStyle = '#FFC107';
+            ctx.beginPath();
+            ctx.arc(size - size / 6, size / 6, size / 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon${size}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>
+
